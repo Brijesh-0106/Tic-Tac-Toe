@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        .container {
+            height: 86vh;
+            display: flex;
+            flex-direction: column;
+            /* justify-content: center; */
+            align-items: center;
+        }
+
+        .game {
+            height: 23rem;
+            width: 23rem;
+            display: flex;
+            margin-top: 2%;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            /* gap: 10px(verticle) 10px(horizontal) */
+            gap: 1rem;
+        }
+
+        .btn {
+            height: 7rem;
+            width: 7rem;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            color: black;
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+            font-size: 3rem;
+        }
+
+        #reset {
+            padding: 0.8rem;
+            font-size: 1.3rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+            background-color: #f1f1f1;
+            border-radius: 1rem;
+            font-weight: bolder;
+        }
+
+        /* Winner writting */
+        /* writting */
+        #loop {
+            display: flex;
+            height: 25%;
+            width: 100%;
+            position: absolute;
+            overflow: hidden;
+            font-size: 55px;
+            top: 65%;
+            white-space: nowrap;
+            /* nowrap is used to put all text in same line */
+            font-family: Georgia, "Times New Roman", Times, serif;
+        }
+
+        #loop>h1 {
+            font-weight: 400;
+            animation-name: anime;
+            animation-duration: 15s;
+            color: transparent;
+            animation-timing-function: linear;
+            /* ease-in and ease-out vado option 6 */
+            animation-iteration-count: infinite;
+            -webkit-text-stroke: 1.2px black;
+        }
+
+        #loop>h1>span {
+            /* this makes text border color */
+            color: black;
+            /* color: transparent; */
+            font-weight: 500;
+        }
+
+        .vis {
+            visibility: hidden;
+        }
+
+        @keyframes anime {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* media query */
+
+        @media only screen and (max-width: 700px) {
+            .game {
+                height: 17rem;
+                width: 17rem;
+                margin-top: 2rem;
+            }
+
+            #loop {
+                top: 59%;
+            }
+
+            .btn {
+                height: 5rem;
+                width: 5rem;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            .game {
+                margin-top: 3rem;
+            }
+
+            #loop {
+                height: 25%;
+                font-size: 9vw;
+                top: 58%;
+            }
+
+            .container {
+                height: 84vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <div class="game">
+                <button class="btn"></button>
+                <button class="btn"></button>
+                <button class="btn"></button>
+                <button class="btn"></button>
+                <button class="btn"></button>
+                <button class="btn"></button>
+                <button class="btn"></button>
+                <button class="btn"></button>
+                <button class="btn"></button>
+            </div>
+            <div id="loop" class="vis">
+                <h1><span class="winner"></span> is winner.</h1> &nbsp;&nbsp;
+                <h1><span class="winner"></span> is winner.</h1> &nbsp;&nbsp;
+                <h1><span class="winner"></span> is winner.</h1> &nbsp;&nbsp;
+                <h1><span class="winner"></span> is winner.</h1> &nbsp;&nbsp;
+            </div>
+        </div>
+        <button id="reset">Reset Game</button>
+    </main>
+    <script>
+        let btns = document.querySelectorAll(".btn");
+        let reset = document.querySelector("#reset");
+        let loop = document.querySelector("#loop");
+        let winner = document.querySelectorAll(".winner");
+
+        let player0 = false;
+
+        let winpattern = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [2, 5, 8],
+            [1, 4, 7],
+            [0, 3, 6],
+            [2, 4, 6],
+            [0, 4, 8],
+        ]
+
+        btns.forEach((btn) => {
+            btn.onclick = () => {
+                if (player0 == false) {
+                    btn.innerText = "X";
+                    player0 = true;
+                } else {
+                    btn.innerText = "O";
+                    player0 = false;
+                }
+                btn.disabled = true;
+                checkwinner();
+            }
+        })
+
+        function checkwinner() {
+            for (let pattern of winpattern) {
+                let pos1 = btns[pattern[0]].innerText;
+                let pos2 = btns[pattern[1]].innerText;
+                let pos3 = btns[pattern[2]].innerText;
+
+                if (pos1 != "".pos2 != "", pos3 != "") {
+                    if (pos1 == pos2 && pos2 == pos3) {
+                        for (let w of winner) {
+                            w.innerText = pos1;
+                        }
+                        loop.classList.remove("vis")
+                        for (let btn of btns) {
+                            btn.disabled = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        reset.onclick = () => {
+            for (let btn of btns) {
+                btn.disabled = false;
+                btn.innerHTML = "";
+                player0 = false;
+            }
+            loop.classList.add("vis")
+        }
+    </script>
+</body>
+
+</html>
